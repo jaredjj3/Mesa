@@ -2,6 +2,7 @@ require_relative 'db_connection'
 require_relative 'searchable'
 require_relative 'associatable'
 require 'active_support/inflector'
+require 'byebug'
 
 class Mesa
   extend Searchable
@@ -42,6 +43,7 @@ class Mesa
   end
 
   def self.table_name
+    return "humans" if self.to_s == "Human"
     self.to_s.tableize
   end
 
@@ -78,6 +80,7 @@ class Mesa
   end
 
   def initialize(params = {})
+    self.class.finalize!
     params.each do |attr_name, attr_val|
       sym_attr_name = attr_name.to_sym
       str_attr_name = attr_name.to_s

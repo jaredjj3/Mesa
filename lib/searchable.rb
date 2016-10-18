@@ -9,9 +9,9 @@ module Searchable
       SELECT
         *
       FROM
-        #{table_name}
+        #{ table_name }
       WHERE
-        #{where_str}
+        #{ where_str }
     SQL
 
     results = DBConnection.execute(query, *params.values)

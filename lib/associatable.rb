@@ -1,6 +1,6 @@
 require 'active_support/inflector'
 require_relative 'options/assoc_options'
-require_relative 'options/belongs_to'
+require_relative 'options/belongs_to_options'
 require_relative 'options/has_many_options'
 
 module Associatable
