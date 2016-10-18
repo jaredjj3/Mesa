@@ -1,8 +1,33 @@
-require_relative '03_associatable'
+require 'active_support/inflector'
+require_relative 'options/assoc_options'
+require_relative 'options/belongs_to'
+require_relative 'options/has_many_options'
 
-# Phase IV
 module Associatable
-  # Remember to go back to 04_associatable to write ::assoc_options
+  def assoc_options
+    @options ||= {}
+  end
+
+  def belongs_to(name, options = {})
+    options = BelongsToOptions.new(name, options)
+    assoc_options[name] = options.dup
+
+    define_method(name) do
+      foreign_key = send(options.foreign_key)
+      primary_key = options.primary_key
+      options.model_class.where(primary_key => foreign_key).first
+    end
+  end
+
+  def has_many(name, options = {})
+    options = HasManyOptions.new(name, self.name.to_snakecase, options)
+
+    define_method(name) do
+      primary_key = send(options.primary_key)
+      foreign_key = options.foreign_key
+      options.model_class.where(foreign_key => primary_key)
+    end
+  end
 
   def has_one_through(name, through_name, source_name)
     define_method(name) do
