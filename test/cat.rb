@@ -42,8 +42,9 @@ puts Cat.find(1).home.attributes
 puts
 puts "Cat.new(name: 'Nacho', owner_id: 2).save"
 puts "Cat.all"
-puts Cat.new(name: 'Nacho', owner_id: 2).save
+Cat.new(name: 'Nacho', owner_id: 2).save
 print Cat.all.map{ |cat| cat.attributes }.join("\n")
+puts
 puts
 puts "Cat.all.last.destroy"
 puts "Cat.all"
