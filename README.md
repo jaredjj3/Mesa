@@ -5,6 +5,34 @@ data from SQLite3 tables ('mesa') to Ruby objects that can be manipulated
 by a web framework. In order to use `Mesa` methods on a model, its class
 must inherit from `Mesa`.
 
+For example:
+
+```ruby
+require 'mesa'
+
+class Human < Mesa
+  has_many :cats
+  has_many :humans
+  belongs_to :home,
+    class_name: 'House',
+    foreign_key: :house_id,
+    primary_key: :id
+end
+
+class House < Mesa
+  has_many :cats
+end
+
+class Cat < Mesa
+  belongs_to :owner,
+    class_name: 'Human',
+    foreign_key: :owner_id,
+    primary_key: :id
+
+  has_one_through :home, :owner, :home
+end
+```
+
 ## Core Features
 
 ### CRUD
@@ -42,32 +70,6 @@ An example that demonstrates the functionality of `Mesa` is in the
 invoke several actions on the `Cat`, `Human`, and `House` models,
 which all inherit from `Mesa`. `Mesa` will make the SQLite3 queries
 needed to complete each action.
-
-In the test file:
-
-```ruby
-class Human < Mesa
-  has_many :cats
-  has_many :humans
-  belongs_to :home,
-    class_name: 'House',
-    foreign_key: :house_id,
-    primary_key: :id
-end
-
-class House < Mesa
-  has_many :cats
-end
-
-class Cat < Mesa
-  belongs_to :owner,
-    class_name: 'Human',
-    foreign_key: :owner_id,
-    primary_key: :id
-
-  has_one_through :home, :owner, :home
-end
-```
 
 ## Technologies
 
