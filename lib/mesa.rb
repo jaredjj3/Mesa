@@ -101,13 +101,14 @@ class Mesa
     self.class.columns.map{ |column| send(column.to_s) }
   end
 
-  def insert
+  def create
     col_names = "(#{ self.class.columns.join(", ") })"
     question_marks = "(#{ (["?"] * self.class.columns.length).join(", ") })"
+    table_name = self.class.table_name
 
     query = <<-SQL
       INSERT INTO
-        #{ self.class.table_name } #{ col_names }
+        #{ table_name } #{ col_names }
       VALUES
         #{ question_marks }
     SQL
@@ -131,8 +132,19 @@ class Mesa
     DBConnection.execute(query, *attribute_values, attributes[:id])
   end
 
+  def destroy
+    query = <<-SQL
+      DELETE FROM
+        #{ self.class.table_name }
+      WHERE
+        id = ?
+    SQL
+
+    DBConnection.execute(query, self.id)
+  end
+
   def save
-    id.nil? ? insert : update
+    id.nil? ? create : update
   end
 
 end
