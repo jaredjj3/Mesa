@@ -1,3 +1,5 @@
+![alt text](./mesa_logo.png)
+
 # Mesa
 
 Mesa is a object relational mapping tool that allows users to translate
