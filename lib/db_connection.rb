@@ -1,9 +1,10 @@
 require 'sqlite3'
+require 'byebug'
 
 PRINT_QUERIES = ENV['PRINT_QUERIES'] == 'true'
 ROOT_FOLDER = File.join(File.dirname(__FILE__), '..')
-CATS_SQL_FILE = File.join(ROOT_FOLDER, 'cats.sql')
-CATS_DB_FILE = File.join(ROOT_FOLDER, 'cats.db')
+TABLE_SQL_FILE = File.join(ROOT_FOLDER, 'table.sql')
+TABLE_DB_FILE = File.join(ROOT_FOLDER, 'table.db')
 
 class DBConnection
   def self.open(db_file_name)
@@ -15,12 +16,12 @@ class DBConnection
 
   def self.reset
     commands = [
-      "rm '#{CATS_DB_FILE}'",
-      "cat '#{CATS_SQL_FILE}' | sqlite3 '#{CATS_DB_FILE}'"
+      "rm '#{TABLE_DB_FILE}'",
+      "cat '#{TABLE_SQL_FILE}' | sqlite3 '#{TABLE_DB_FILE}'"
     ]
 
     commands.each { |command| `#{command}` }
-    DBConnection.open(CATS_DB_FILE)
+    DBConnection.open(TABLE_DB_FILE)
   end
 
   def self.instance

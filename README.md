@@ -13,7 +13,7 @@ For example:
 require 'mesa'
 
 class Human < Mesa
-  has_many :cats
+  has_many :tables
   has_many :humans
   belongs_to :home,
     class_name: 'House',
@@ -22,10 +22,10 @@ class Human < Mesa
 end
 
 class House < Mesa
-  has_many :cats
+  has_many :tables
 end
 
-class Cat < Mesa
+class Table < Mesa
   belongs_to :owner,
     class_name: 'Human',
     foreign_key: :owner_id,
@@ -68,8 +68,8 @@ satisfy the `:through_name` and `:source_name` arguments.
 ## How to Run
 
 An example that demonstrates the functionality of `Mesa` is in the
-[test](./test/) folder. Running `ruby cat.rb` in a terminal will
-invoke several actions on the `Cat`, `Human`, and `House` models,
+[test](./test/) folder. Running `ruby table.rb` in a terminal will
+invoke several actions on the `Table`, `Human`, and `House` models,
 which all inherit from `Mesa`. `Mesa` will make the SQLite3 queries
 needed to complete each action.
 
