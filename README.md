@@ -2,9 +2,7 @@
 
 # Mesa
 
-Mesa is a object relational mapping tool that allows users to translate
-data from SQLite3 tables ('mesa') to Ruby objects that can be manipulated
-by a web framework. In order to use `Mesa` methods on a model, its class
+Mesa is an object relational mapping tool that allows users to translate data from SQLite3 tables (<em>mesa</em>) to Ruby objects that can be manipulated by any Ruby web framework. In order to use `Mesa` methods on a model, its class
 must inherit from `Mesa`.
 
 For example:
@@ -35,43 +33,87 @@ class Table < Mesa
 end
 ```
 
+## How to Run the Example
+
+### Requirements
+`ruby -v 2.3.1p112` or later and `bundler version 1.12.5` or later
+
+1. In the terminal, navigate to an empty project directory.
+
+2. Run the command `git clone https://github.com/jaredjj3/Mesa`.
+
+3. From the root directory, navigate to `./Mesa` and run the command `bundle install`.
+
+4. After bundle installs the required gems, navigate to `./Mesa/test`
+
+5. Run the command `ruby mesa_test.rb`
+
+Mesa will setup the database, run some test queries, and print it to the terminal. You can edit the queries in `./Mesa/test/mesa_test.rb` and the database in `./Mesa/table.sql`. Alternatively, `mesa_test.rb` can be loaded in a Ruby REPL, such as pry, and the database can be updated using on of the queries given in the core features.
+
 ## Core Features
 
 ### CRUD
-* `create` - allows the user to add a new row to a table
+* `Mesa#create` - create method adds a new row to a table with the specified data
 ```ruby
-MyClass.new(name: 'generic_user').create
+Human.new(name: 'Jared Johnson').create
+# adds a human named Jared Johnson to the database
 ```
-* `all`, `where` - read-only methods that allow the user to retrieve
-an existing row from a table
+
+* `Mesa#all` - read method that retrieves all the existing rows from the corresponding table in the database as hashes
 ```ruby
-MyClass.all
-MyClass.where(name: 'generic_user')
+Table.all
+# => Returns objects that map the data from each row
+# {:id=>1, :name=>"Pine", :owner_id=>1}
+# {:id=>2, :name=>"Oak", :owner_id=>2}
+# {:id=>3, :name=>"Cherrywood", :owner_id=>3}
+# {:id=>4, :name=>"Spruce", :owner_id=>3}
+# {:id=>5, :name=>"Plastic", :owner_id=>nil}
 ```
-* `update` - allows the user to update an existing row in a table
+* `Mesa#where` - read method that retrieves the existing rows from the corresponding table that meet the criteria
 ```ruby
-MyClass.update(name: 'another_generic_user')
+Table.where(name: "Spruce")
+# => Returns objects that map the data from each row
+# that match the criteria
+# {:id=>4, :name=>"Spruce", :owner_id=>3}
 ```
-* `destroy` - allows the user to remove an existing row in a table
+
+* `Mesa#update` - update method that updates an existing row in a table with the passed in id and data
 ```ruby
-MyClass.where(name: 'another_generic_user').destroy
+Human.update(id: 1, name: 'Jared Jemal Johnson')
+# => Updates the name of the Human that has id == 1
+```
+* `Mesa#destroy` - allows the user to remove an existing row in a table
+```ruby
+Table.where(name: "Spruce").destroy
+# => Removes the Spruce row from the "tables" Table in the database
 ```
 
 ### Associations
-* `belongs_to` - defines getter/setter methods that make queries that
-satisfy the `:class_name`, `:foreign_key`, and `:primary_key` options
+* `belongs_to` - defines getter/setter methods that make queries that satisfy the `:class_name`, `:foreign_key`, and `:primary_key` options
+
 * `has_many` - defines getter/setter methods that make queries that
 satisfy the `:class_name`, `:foreign_key`, and `:primary_key` options
+
 * `has_one_through` - defines a getter/setter methods that make queries that
 satisfy the `:through_name` and `:source_name` arguments.
 
-## How to Run
+```ruby
+# In the Human class:
+class Human < Mesa
+  has_many :tables
+end
 
-An example that demonstrates the functionality of `Mesa` is in the
-[test](./test/) folder. Running `ruby table.rb` in a terminal will
-invoke several actions on the `Table`, `Human`, and `House` models,
-which all inherit from `Mesa`. `Mesa` will make the SQLite3 queries
-needed to complete each action.
+# In the Table class:
+class Table < Mesa
+  belongs_to :owner,
+    class_name: 'Human',
+    foreign_key: :owner_id,
+    primary_key: :id
+end
+
+Table.where(name: "Oak").owner
+# {:id=>2, :fname=>"Anthony", :lname=>"Robinson", :house_id=>1}
+```
 
 ## Technologies
 

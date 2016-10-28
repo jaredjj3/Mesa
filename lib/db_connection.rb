@@ -1,5 +1,4 @@
 require 'sqlite3'
-require 'byebug'
 
 PRINT_QUERIES = ENV['PRINT_QUERIES'] == 'true'
 ROOT_FOLDER = File.join(File.dirname(__FILE__), '..')

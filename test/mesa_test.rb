@@ -35,7 +35,7 @@ puts "Table.where(name: 'Pine') =>"
 puts Table.where(name: 'Pine').first.attributes
 puts
 puts "Table.find(2).owner =>"
-puts Table.find(2).attributes
+puts Table.find(2).owner.attributes
 puts
 puts "Table.find(1).home"
 puts Table.find(1).home.attributes
