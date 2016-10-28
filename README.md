@@ -137,5 +137,5 @@ patch methods on Ruby's `String` class:
 ## Future Releases
 
 * Support for PostgresQL
-* sanitized input throughout
+* Sanitized input throughout
 * Support for Rails
