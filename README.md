@@ -69,7 +69,7 @@ Table.all
 # {:id=>4, :name=>"Spruce", :owner_id=>3}
 # {:id=>5, :name=>"Plastic", :owner_id=>nil}
 ```
-* `Mesa#where` - read method that retrieves the existing rows from the corresponding table that meet the criteria
+* `Mesa::where` - read method that retrieves the existing rows from the corresponding table that meet the criteria
 ```ruby
 Table.where(name: "Spruce")
 # => Returns objects that map the data from each row
@@ -77,7 +77,7 @@ Table.where(name: "Spruce")
 # {:id=>4, :name=>"Spruce", :owner_id=>3}
 ```
 
-* `Mesa#update` - update method that updates an existing row in a table with the passed in id and data
+* `Mesa::update` - update method that updates an existing row in a table with the passed in id and data
 ```ruby
 Human.update(id: 1, name: 'Jared Jemal Johnson')
 # => Updates the name of the Human that has id == 1
