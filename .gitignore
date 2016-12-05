@@ -7,6 +7,8 @@
 *.db
 *.sqlite
 
+### Byebug ###
+.byebug_history
 
 ### OSX ###
 

@@ -111,7 +111,7 @@ class Table < Mesa
     primary_key: :id
 end
 
-Table.where(name: "Oak").owner
+Table.where(name: "Oak").first.owner
 # {:id=>2, :fname=>"Anthony", :lname=>"Robinson", :house_id=>1}
 ```
 
@@ -127,8 +127,7 @@ needs to make to return the desired output. Examples are `belongs_to_options`
 and the `belongs_to_options` found [here](./lib/options).
 
 A small consideration was made to improve the readability of the code.
-A [helper file](./lib/options/active_support_helpers) was used to monkey
-patch methods on Ruby's `String` class:
+Methods were monkey patched on Ruby's `String` class:
 * `to_camelcase` - ExampleText
 * `to_snakecase` - example_text
 * `to_singular` - example_text
